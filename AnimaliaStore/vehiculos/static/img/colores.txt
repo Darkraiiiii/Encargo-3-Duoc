@@ -1,0 +1,5 @@
+Color de fondo: #D9F7FA
+Color Para footep:#053C5E
+Color para letras: #BD1E1E
+Color para letras2: #BCA0BC
+Color para iconos: #1595B5

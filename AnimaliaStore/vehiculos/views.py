@@ -87,10 +87,16 @@ def tienda(request):
     return render(request, 'mostrar.html', datos)
 
 
-def agregar_producto(request,id):
-    carrito_compra= Carrito(request)
+def agregar_producto(request, id):
+    carrito_compra = Carrito(request)
     animal = Animal.objects.get(numero=id)
-    carrito_compra.agregar(animal=animal)
+    animal_data = {
+        "numero": animal.numero,
+        "animal": animal.animal,
+        "categoria_id": animal.categoria_id,
+        "precio": float(animal.precio),
+    }
+    carrito_compra.agregar(animal_data)
     return redirect('mostrar')
 
 def eliminar_producto(request, id):
@@ -112,25 +118,25 @@ def limpiar_carrito(request):
 
 
 def generarBoleta(request):
-    precio_total=0
+    precio_total = 0
     for key, value in request.session['carrito'].items():
-        precio_total = precio_total + int(value['precio']) * int(value['cantidad'])
-    boleta = Boleta(total = precio_total)
+        precio_total += float(value['precio']) * int(value['cantidad'])
+    boleta = Boleta(total=precio_total)
     boleta.save()
     productos = []
     for key, value in request.session['carrito'].items():
-            producto = Animal.objects.get(numero = value['animal_id'])
-            cant = value['cantidad']
-            subtotal = cant * int(value['precio'])
-            detalle = detalle_boleta(id_boleta = boleta, id_producto = producto, cantidad = cant, subtotal = subtotal)
-            detalle.save()
-            productos.append(detalle)
-    datos={
-        'productos':productos,
-        'fecha':boleta.fechaCompra,
+        producto = Animal.objects.get(numero=value['animal_id'])
+        cant = int(value['cantidad'])
+        subtotal = cant * float(value['precio'])
+        detalle = detalle_boleta(id_boleta=boleta, id_producto=producto, cantidad=cant, subtotal=subtotal)
+        detalle.save()
+        productos.append(detalle)
+    datos = {
+        'productos': productos,
+        'fecha': boleta.fechaCompra,
         'total': boleta.total
     }
     request.session['boleta'] = boleta.id_boleta
     carrito = Carrito(request)
     carrito.limpiar()
-    return render(request, 'detallecarrito.html',datos)
+    return render(request, 'detallecarrito.html', datos)

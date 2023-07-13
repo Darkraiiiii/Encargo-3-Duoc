@@ -17,7 +17,7 @@ class Animal(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2, blank=False, verbose_name="Precio")
     visualizaciones = models.PositiveIntegerField(default='', blank=False, verbose_name="Visualizaciones")
     descripcion = models.TextField(max_length=50, null=True)
-    imagen=models.ImageField(upload_to="imagenes",null=True, blank=True, verbose_name="Imagen")
+    imagen = models.ImageField(upload_to="imagenes", null=True, blank=True, verbose_name="Imagen")
 
     def __str__(self):
         return self.numero

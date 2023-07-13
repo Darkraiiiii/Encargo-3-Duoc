@@ -15,7 +15,7 @@
     <div class="container">
         <div class="row">
             {% for wau in animalitos %}
-            <div class="col-12 col-md-4">
+            <div class="col-8 col-md-4">
                 <div class="card text-center">
                     {% if wau.imagen %}
                         <img src="{{ wau.imagen.url }}" class="card-img-top mx-auto">
@@ -30,9 +30,9 @@
                         </p>
                         {%if user.is_staff%}
                         <a href="{% url 'dos' %}" class="btn btn-warning">ver registro</a>
-                        <a href="{% url 'index'%}" class="btn btn-success">Inicio</a>
+                        <a href="{% url 'agregar' wau.numero%}" class="btn btn-outline-success">Agregar al carrito</a>
                         {% elif user.is_authenticated %}
-                        <a href="{% url 'index'%}" class="btn btn-success">Inicio</a>
+                        <a href="{% url 'agregar' wau.numero%}" class="btn btn-outline-success">Agregar al carrito</a>
                         {%else%}
                         <a href="{%url 'login'%}" class="btn btn-danger">Login</a>
                         {%endif%}
@@ -41,6 +41,11 @@
             </div>
             {% endfor %}
         </div>
+        <div class="col-4">
+            {%include "carrito.html" %}
+
+        </div>
+
     </div>
 </body>
 </html>
